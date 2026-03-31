@@ -1,0 +1,12 @@
+for jwt 
+openssl rand -base64 32   or openssl rand -hex 64   or head -c 32 /dev/urandom | base64
+
+******************narutogokuluffy009_sanji**********:**********POyOzGkZFGw7owl3**********8
+mongodb+srv://******narutogokuluffy009_sanji**:****POyOzGkZFGw7owl3***********@sanji.xloed0r.mongodb.net/?appName=Sanji
+
+
+mongodb+srv://******narutogokuluffy009_sanji**:****POyOzGkZFGw7owl3***********@sanji.xloed0r.mongodb.net/?appName=Sanji
+
+
+A_E=admin@shreenandi.com
+A_P=Admin@123

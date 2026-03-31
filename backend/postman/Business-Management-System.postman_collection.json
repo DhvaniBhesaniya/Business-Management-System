@@ -1,0 +1,840 @@
+{
+  "info": {
+    "_postman_id": "bms-shree-nandi-v1",
+    "name": "Business Management System – Shree Nandi",
+    "description": "Complete API collection for the Shree Nandi Business Management System backend.\n\n**Setup:**\n1. Set the `base_sng_url` variable to `http://127.0.0.1:8080`.\n2. Call **Login** or **Register** – the `token` variable is set automatically via the test script.\n3. All protected requests use `{{token}}` via the collection-level Authorization header.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_sng_url",
+      "value": "http://localhost:8080",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "user_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "product_id",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "url": {
+              "raw": "{{base_sng_url}}/api/auth/health",
+              "host": [
+                "{{base_sng_url}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "health"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Register (first user = admin)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var res = pm.response.json();",
+                  "if (res.token) { pm.collectionVariables.set('token', res.token); }",
+                  "if (res.user && res.user.id) { pm.collectionVariables.set('user_id', res.user.id); }",
+                  "pm.test('Status 201', () => pm.response.to.have.status(201));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@shreenandi.com\",\n  \"password\": \"Admin@1234\",\n  \"name\": \"Super Admin\"\n}"
+            },
+            "url": {
+              "raw": "{{base_sng_url}}/api/auth/register",
+              "host": [
+                "{{base_sng_url}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "register"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var res = pm.response.json();",
+                  "if (res.token) { pm.collectionVariables.set('token', res.token); }",
+                  "if (res.user && res.user.id) { pm.collectionVariables.set('user_id', res.user.id); }",
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Has token', () => pm.expect(res.token).to.be.a('string'));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@shreenandi.com\",\n  \"password\": \"Admin@1234\"\n}"
+            },
+            "url": {
+              "raw": "{{base_sng_url}}/api/auth/login",
+              "host": [
+                "{{base_sng_url}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Current User (me)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Has email', () => pm.expect(pm.response.json().email).to.be.a('string'));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_sng_url}}/api/auth/me",
+              "host": [
+                "{{base_sng_url}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "me"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Create User (Admin)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 201', () => pm.response.to.have.status(201));",
+                  "var res = pm.response.json();",
+                  "if (res.id) { pm.collectionVariables.set('user_id', res.id); }"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"manager@shreenandi.com\",\n  \"password\": \"Manager@1234\",\n  \"name\": \"Store Manager\",\n  \"role\": \"manager\"\n}"
+            },
+            "url": {
+              "raw": "{{base_sng_url}}/api/users/",
+              "host": [
+                "{{base_sng_url}}"
+              ],
+              "path": [
+                "api",
+                "users",
+                ""
+              ]
+            }
+          }
+        },
+        {
+          "name": "List Users",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Has users array', () => pm.expect(pm.response.json().users).to.be.an('array'));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_sng_url}}/api/users/?page=1&limit=10",
+              "host": [
+                "{{base_sng_url}}"
+              ],
+              "path": [
+                "api",
+                "users",
+                ""
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                },
+                {
+                  "key": "search",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "role",
+                  "value": "admin",
+                  "disabled": true
+                },
+                {
+                  "key": "is_active",
+                  "value": "true",
+                  "disabled": true
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get User by ID",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_sng_url}}/api/users/{{user_id}}",
+              "host": [
+                "{{base_sng_url}}"
+              ],
+              "path": [
+                "api",
+                "users",
+                "{{user_id}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update User (name / email)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Updated Name\"\n}"
+            },
+            "url": {
+              "raw": "{{base_sng_url}}/api/users/{{user_id}}",
+              "host": [
+                "{{base_sng_url}}"
+              ],
+              "path": [
+                "api",
+                "users",
+                "{{user_id}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Change Own Password",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 204', () => pm.response.to.have.status(204));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"current_password\": \"Admin@1234\",\n  \"new_password\": \"Admin@5678\"\n}"
+            },
+            "url": {
+              "raw": "{{base_sng_url}}/api/users/change-password",
+              "host": [
+                "{{base_sng_url}}"
+              ],
+              "path": [
+                "api",
+                "users",
+                "change-password"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update User Role (Admin)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"role\": \"cashier\"\n}"
+            },
+            "url": {
+              "raw": "{{base_sng_url}}/api/users/{{user_id}}/role",
+              "host": [
+                "{{base_sng_url}}"
+              ],
+              "path": [
+                "api",
+                "users",
+                "{{user_id}}",
+                "role"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Set User Active/Inactive (Admin)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"is_active\": false\n}"
+            },
+            "url": {
+              "raw": "{{base_sng_url}}/api/users/{{user_id}}/active",
+              "host": [
+                "{{base_sng_url}}"
+              ],
+              "path": [
+                "api",
+                "users",
+                "{{user_id}}",
+                "active"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete User (Admin)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 204', () => pm.response.to.have.status(204));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{base_sng_url}}/api/users/{{user_id}}",
+              "host": [
+                "{{base_sng_url}}"
+              ],
+              "path": [
+                "api",
+                "users",
+                "{{user_id}}"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Products",
+      "item": [
+        {
+          "name": "Create Product",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 201', () => pm.response.to.have.status(201));",
+                  "var res = pm.response.json();",
+                  "if (res.id) { pm.collectionVariables.set('product_id', res.id); }"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Basmati Rice 5kg\",\n  \"category\": \"Grains\",\n  \"brand\": \"India Gate\",\n  \"description\": \"Premium quality basmati rice\",\n  \"purchase_price\": 280.00,\n  \"selling_price\": 350.00,\n  \"mrp\": 375.00,\n  \"gst_rate\": 5.0,\n  \"stock_quantity\": 100.0,\n  \"unit\": \"packets\",\n  \"min_stock_level\": 10.0,\n  \"sku\": \"RICE-BAS-5KG-001\",\n  \"has_expiry\": true,\n  \"expiry_date\": \"2027-01-01T00:00:00Z\",\n  \"manufacturing_date\": \"2026-01-01T00:00:00Z\",\n  \"batch_number\": \"BATCH-001\",\n  \"supplier_name\": \"Grain Traders Pvt Ltd\",\n  \"supplier_contact\": \"+91-9876543210\"\n}"
+            },
+            "url": {
+              "raw": "{{base_sng_url}}/api/products",
+              "host": [
+                "{{base_sng_url}}"
+              ],
+              "path": [
+                "api",
+                "products"
+              ]
+            }
+          }
+        },
+        {
+          "name": "List Products",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Has products array', () => pm.expect(pm.response.json().products).to.be.an('array'));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_sng_url}}/api/products?page=1&limit=10",
+              "host": [
+                "{{base_sng_url}}"
+              ],
+              "path": [
+                "api",
+                "products"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                },
+                {
+                  "key": "category",
+                  "value": "Grains",
+                  "disabled": true
+                },
+                {
+                  "key": "search",
+                  "value": "rice",
+                  "disabled": true
+                },
+                {
+                  "key": "low_stock",
+                  "value": "true",
+                  "disabled": true
+                },
+                {
+                  "key": "expiring_soon",
+                  "value": "true",
+                  "disabled": true
+                },
+                {
+                  "key": "expired",
+                  "value": "true",
+                  "disabled": true
+                },
+                {
+                  "key": "is_active",
+                  "value": "true",
+                  "disabled": true
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Product by ID",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_sng_url}}/api/products/{{product_id}}",
+              "host": [
+                "{{base_sng_url}}"
+              ],
+              "path": [
+                "api",
+                "products",
+                "{{product_id}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Product",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"selling_price\": 360.00,\n  \"stock_quantity\": 95.0,\n  \"description\": \"Updated description – premium long grain basmati\"\n}"
+            },
+            "url": {
+              "raw": "{{base_sng_url}}/api/products/{{product_id}}",
+              "host": [
+                "{{base_sng_url}}"
+              ],
+              "path": [
+                "api",
+                "products",
+                "{{product_id}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Stock",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"quantity_change\": -5.0\n}"
+            },
+            "url": {
+              "raw": "{{base_sng_url}}/api/products/{{product_id}}/stock",
+              "host": [
+                "{{base_sng_url}}"
+              ],
+              "path": [
+                "api",
+                "products",
+                "{{product_id}}",
+                "stock"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete Product (Admin)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 204', () => pm.response.to.have.status(204));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{base_sng_url}}/api/products/{{product_id}}",
+              "host": [
+                "{{base_sng_url}}"
+              ],
+              "path": [
+                "api",
+                "products",
+                "{{product_id}}"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Product Alerts",
+      "item": [
+        {
+          "name": "Low Stock Products",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Returns array', () => pm.expect(pm.response.json()).to.be.an('array'));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_sng_url}}/api/products/alerts/low-stock",
+              "host": [
+                "{{base_sng_url}}"
+              ],
+              "path": [
+                "api",
+                "products",
+                "alerts",
+                "low-stock"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Expiring Soon Products",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Returns array', () => pm.expect(pm.response.json()).to.be.an('array'));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_sng_url}}/api/products/alerts/expiring?days=30",
+              "host": [
+                "{{base_sng_url}}"
+              ],
+              "path": [
+                "api",
+                "products",
+                "alerts",
+                "expiring"
+              ],
+              "query": [
+                {
+                  "key": "days",
+                  "value": "30"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Expired Products",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Returns array', () => pm.expect(pm.response.json()).to.be.an('array'));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_sng_url}}/api/products/alerts/expired",
+              "host": [
+                "{{base_sng_url}}"
+              ],
+              "path": [
+                "api",
+                "products",
+                "alerts",
+                "expired"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

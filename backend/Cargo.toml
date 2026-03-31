@@ -1,0 +1,65 @@
+[package]
+name = "shree-nandi-backend"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+# Web Framework
+axum = "0.7"
+tokio = { version = "1", features = ["full"] }
+tower = "0.4"
+tower-http = { version = "0.5", features = ["cors", "trace"] }
+
+# Serialization
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+
+# Database
+mongodb = "2.8"
+bson = { version = "2.9", features = ["chrono-0_4"] }
+
+# Authentication
+jsonwebtoken = "9.2"
+bcrypt = "0.15"
+
+# Validation
+validator = { version = "0.18", features = ["derive"] }
+
+# Environment Variables
+dotenvy = "0.15"
+
+# Date & Time
+chrono = { version = "0.4", features = ["serde"] }
+
+# UUID
+uuid = { version = "1.6", features = ["v4", "serde"] }
+
+# Logging & Tracing
+log = "0.4.17"
+log4rs = { version = "1.0.0", features = ["gzip"] }
+
+# Error Handling
+thiserror = "1.0"
+anyhow = "1.0"
+
+# Async
+async-trait = "0.1"
+
+# Scheduler (for expiry checks)
+tokio-cron-scheduler = "0.10"
+
+
+# firebase-rs = "2.2"      # Crate to interact with Firebase
+# cloud-storage = "0.11.1"
+dotenv = "0.15.0"
+lazy_static = "1.5.0"
+config = "0.15.22"
+
+
+[dev-dependencies]
+# HTTP client for integration tests
+reqwest = { version = "0.11", features = ["json"] }
+# Tokio test runtime
+tokio = { version = "1", features = ["full"] }
+# Pretty assertions for test output
+serde_json = "1.0"
