@@ -24,3 +24,5 @@ target
 /logs
 Cargo.lock
 .env
+
+logs*

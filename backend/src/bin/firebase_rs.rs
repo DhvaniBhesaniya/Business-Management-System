@@ -128,4 +128,37 @@
 //     serde_json::from_str(s).unwrap()
 // }
 
-fn main() {}
+fn main() {
+// https://cgarciarosales97.medium.com/crud-operations-with-rust-and-firebase-realtime-database-1841f66f3fa0    
+}
+
+
+// register response .
+
+// {
+//     "tokeeeeeee": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2OWQ4YzkzMGI2MjczYzBmODk1ZGFiMjEiLCJlbWFpbCI6ImFkbWluQHNocmVlbmFuZGkuY29tIiwicm9sZSI6ImFkbWluIiwiZXhwIjoxNzc1OTAxMzYwLCJpYXQiOjE3NzU4MTQ5NjB9.v_xcE9WI9QrE1OchzCBF4eWw62mtsODHfMo2gFclkWc",
+//     "user": {
+//         "id": "69d8c930b6273c0f895dab21",
+//         "email": "admin@shreenandi.com",
+//         "name": "Super Admin",
+//         "role": "admin",
+//         "is_active": true,
+//         "created_at": "2026-04-10T09:56:00.866022265Z"
+//     }
+// }
+
+
+// login response
+
+
+// {
+//     "tokeeeeeee": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2OWQ4YzkzMGI2MjczYzBmODk1ZGFiMjEiLCJlbWFpbCI6ImFkbWluQHNocmVlbmFuZGkuY29tIiwicm9sZSI6ImFkbWluIiwiZXhwIjoxNzc1OTAxNDQ0LCJpYXQiOjE3NzU4MTUwNDR9.uwwpVg3Qna3vq8meHst6-HHLAwammkjuUXCdvmaw0To",
+//     "user": {
+//         "id": "69d8c930b6273c0f895dab21",
+//         "email": "admin@shreenandi.com",
+//         "name": "Super Admin",
+//         "role": "admin",
+//         "is_active": true,
+//         "created_at": "2026-04-10T09:56:00.866022265Z"
+//     }
+// }
