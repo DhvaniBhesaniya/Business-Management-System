@@ -1,5 +1,5 @@
-for jwt 
-openssl rand -base64 32   or openssl rand -hex 64   or head -c 32 /dev/urandom | base64
+for jwt (do this in terminal)
+openssl rand -base64 32   --or-- openssl rand -hex 64   --or-- head -c 32 /dev/urandom | base64
 
 ******************narutogokuluffy009_sanji**********:**********POyOzGkZFGw7owl3**********8
 mongodb+srv://******narutogokuluffy009_sanji**:****POyOzGkZFGw7owl3***********@sanji.xloed0r.mongodb.net/?appName=Sanji
@@ -10,3 +10,14 @@ mongodb+srv://******narutogokuluffy009_sanji**:****POyOzGkZFGw7owl3***********@s
 
 A_E=admin@shreenandi.com
 A_P=Admin@123
+
+
+
+
+
+
+
+next command to do 
+
+based on the current backend code i want to create a frontend  using react, vite , latest ui design. and components which are unique in demand.
+i wany to create a  a system for my own business where i can handle my different products.  their details , biling ,  ledgere  hiistory ...(complete the full command before executing it.)

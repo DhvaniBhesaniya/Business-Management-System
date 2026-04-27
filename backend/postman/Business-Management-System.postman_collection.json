@@ -241,7 +241,7 @@
           "request": {
             "method": "GET",
             "url": {
-              "raw": "{{base_sng_url}}/api/users/?page=1&limit=10",
+              "raw": "{{base_sng_url}}/api/users?page=1&limit=10",
               "host": [
                 "{{base_sng_url}}"
               ],

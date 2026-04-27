@@ -1,12 +1,11 @@
 use std::sync::Arc;
 use validator::Validate;
-use crate::{
-    errors::AppError,
-    models::{
-        CreateProductRequest, Product, ProductListResponse, ProductQueryParams,
-        ProductResponse, UpdateProductRequest, UserRole,
-    },
-    repositories::ProductRepository,
+
+use crate::errors::AppError;
+use crate::user_operations::UserRole;
+use super::product_structure::{
+    CreateProductRequest, Product, ProductListResponse, ProductQueryParams,
+    ProductRepository, ProductResponse, UpdateProductRequest,
 };
 
 #[derive(Clone)]

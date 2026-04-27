@@ -1,6 +1,6 @@
 use chrono::Utc;
 use jsonwebtoken::{decode, encode, DecodingKey, EncodingKey, Header, Validation};
-use crate::{configuration::AppConfig, errors::AppError, models::{Claims, User}};
+use crate::{configuration::AppConfig, errors::AppError, user_operations::{Claims, User}};
 
 pub struct JwtUtils {
     encoding_key: EncodingKey,

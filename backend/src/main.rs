@@ -1,16 +1,15 @@
 mod configuration;
 mod errors;
 mod middleware;
-mod models;
-mod repositories;
+mod product_operations;
 mod routes;
 mod schedulers;
-mod services;
+mod user_operations;
 mod utils;
 
 use configuration::AppConfig;
-use repositories::{MongoProductRepository, MongoUserRepository, UserRepository};
-use services::{AuthService, ProductService};
+use product_operations::{MongoProductRepository, ProductService};
+use user_operations::{MongoUserRepository, UserRepository, UserService};
 use std::{net::SocketAddr, sync::Arc};
 use utils::{db::connect, jwt::JwtUtils, logger::startLogger};
 
@@ -41,7 +40,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let jwt_utils = Arc::new(JwtUtils::new(&config));
 
     // ── Services ─────────────────────────────────────────────────────────────
-    let auth_service = Arc::new(AuthService::new(user_repo.clone(), jwt_utils.clone()));
+    let user_service = Arc::new(UserService::new(user_repo.clone(), jwt_utils.clone()));
     let product_service = Arc::new(ProductService::new(product_repo.clone()));
 
     // ── Seed check (first run → admin account reminder) ──────────────────────
@@ -60,7 +59,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     }
 
     // ── Routes ───────────────────────────────────────────────────────────────
-    let app = routes::create_routes(auth_service, product_service, jwt_utils);
+    let app = routes::create_routes(user_service, product_service, jwt_utils);
 
     log::info!("📝 API routes registered:");
     log::info!("   Auth:");

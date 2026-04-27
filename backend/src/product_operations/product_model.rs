@@ -6,13 +6,13 @@ use axum::{
 };
 use serde::Deserialize;
 use std::sync::Arc;
-use crate::{
-    errors::AppError,
-    models::{Claims, CreateProductRequest, ProductQueryParams, UpdateProductRequest},
-    services::ProductService,
-};
 
-// ── DTOs used only by this route module ─────────────────────────────────────
+use crate::errors::AppError;
+use crate::user_operations::Claims;
+use super::product_structure::{CreateProductRequest, ProductQueryParams, UpdateProductRequest};
+use super::product_service::ProductService;
+
+// ── DTOs used only by this handler module ────────────────────────────────────
 
 /// Request body for PATCH /api/products/:id/stock
 #[derive(Debug, Deserialize)]

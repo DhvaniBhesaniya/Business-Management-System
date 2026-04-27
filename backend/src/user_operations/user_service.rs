@@ -1,23 +1,23 @@
 use std::sync::Arc;
 use validator::Validate;
+
 use crate::{
     errors::AppError,
-    models::{
-        ChangePasswordRequest, CreateUserRequest, LoginRequest, LoginResponse,
-        RegisterRequest, SetUserActiveRequest, UpdateUserRequest, UpdateUserRoleRequest,
-        User, UserListResponse, UserQueryParams, UserResponse, UserRole,
-    },
-    repositories::UserRepository,
     utils::jwt::{hash_password, verify_password, JwtUtils},
+};
+use super::user_structure::{
+    ChangePasswordRequest, CreateUserRequest, LoginRequest, LoginResponse,
+    RegisterRequest, SetUserActiveRequest, UpdateUserRequest, UpdateUserRoleRequest,
+    User, UserListResponse, UserQueryParams, UserResponse, UserRole, UserRepository,
 };
 
 #[derive(Clone)]
-pub struct AuthService {
+pub struct UserService {
     user_repo: Arc<dyn UserRepository>,
     jwt_utils: Arc<JwtUtils>,
 }
 
-impl AuthService {
+impl UserService {
     pub fn new(user_repo: Arc<dyn UserRepository>, jwt_utils: Arc<JwtUtils>) -> Self {
         Self {
             user_repo,
