@@ -17,7 +17,148 @@ A_P=Admin@123
 
 
 
-next command to do 
+You are an expert React.js frontend developer. Build a complete, modern, 
+production-ready frontend for a Business Management System backend (Rust/Actix-Web).
 
-based on the current backend code i want to create a frontend  using react, vite , latest ui design. and components which are unique in demand.
-i wany to create a  a system for my own business where i can handle my different products.  their details , biling ,  ledgere  hiistory ...(complete the full command before executing it.)
+## Tech Stack (STRICT - no deviations)
+- React 18+ (Vite) ( js only  no typscript)
+- Tailwind CSS v3+
+- React Router v6
+- Axios (API calls)
+- Zustand (state management)
+- React Query / TanStack Query (server state + caching)
+- React Hook Form + Zod (forms + validation)
+- Recharts (charts/analytics)
+- Lucide React (icons)
+- Framer Motion (animations)
+- React Hot Toast (notifications)
+
+## Backend Info
+- Base URL: http://localhost:8080 (configurable via .env)
+- Auth: JWT Bearer Token (stored in localStorage)
+- Two main domains: Users and Products
+- Rate limiting is active on the backend
+- mongodb integration exists on backend
+
+## Pages & Features to Build
+
+### 1. Auth Pages
+- /login — Email + password login form, JWT stored on success
+- /register — Full registration form with validation
+
+### 2. Dashboard (/dashboard)
+- Summary cards: Total Users, Total Products, Recent Activity
+- Line chart: product/user growth over time (Recharts)
+- Recent transactions/activity feed table
+
+### 3. User Management (/users)
+- Paginated table of all users
+- Search + filter by role/status
+- View user modal (details)
+- Edit user inline or via modal
+- Delete user with confirmation dialog
+- Role badge chips (Admin, Manager, Staff)
+
+### 4. Product Management (/products)
+- Card grid view + list view toggle
+- Search + filter by category/price/status
+- Add product modal (form with image URL, price, stock, category)
+- Edit product modal
+- Delete with confirmation
+- Stock status badge (In Stock / Low Stock / Out of Stock)
+
+### 5. Settings (/settings)
+- Profile update form
+- Password change form
+- App preferences (theme toggle dark/light)
+
+## UI Design Rules
+- Use a sidebar layout with collapsible nav
+- Color scheme: Deep Indigo + Violet accent + clean white cards
+- Glassmorphism effect on cards (backdrop-blur, bg-white/10)
+- Skeleton loaders for all data-fetching states
+- Fully responsive (mobile sidebar drawer)
+- Dark mode support via Tailwind `dark:` classes
+- Smooth page transitions with Framer Motion
+- All tables must have loading, empty, and error states
+
+## Component Architecture
+src/
+  components/
+    ui/          ← reusable: Button, Input, Modal, Badge, Card, Table, Skeleton
+    layout/      ← Sidebar, Topbar, PageWrapper
+    charts/      ← RevenueChart, GrowthChart
+  pages/
+    Auth/        ← Login.jsx, Register.jsx
+    Dashboard/   ← index.jsx
+    Users/       ← index.jsx, UserModal.jsx
+    Products/    ← index.jsx, ProductModal.jsx, ProductCard.jsx
+    Settings/    ← index.jsx
+  hooks/         ← useAuth.js, useUsers.js, useProducts.js
+  services/      ← api.js (axios instance), auth.service.js, 
+                    user.service.js, product.service.js
+  store/         ← authStore.js (Zustand)
+  utils/         ← constants.js, helpers.js
+
+## Rules
+- All API calls must handle 401 (auto logout + redirect to /login)
+- Use React Query for caching — no redundant API calls
+- Protected routes: redirect to /login if no JWT
+- Keep components under 200 lines — split if larger
+- Use Tailwind utility classes only — no custom CSS files
+- Add JSDoc comments on all hooks and service functions
+- Generate one module at a time, fully complete before moving on
+
+
+
+learn this prd and   learn backedn code if anything needed ask me  like or  any changes needed   first go through it then i will tell when to start.
+
+
+
+
+
+
+
+
+
+Reviewed the PRD and backend codebase. No frontend implementation started yet.
+
+Key backend findings (from backend/src/...):
+•  Framework is Axum, not Actix (backend/Cargo.toml, backend/src/main.rs).
+•  JWT auth is implemented; protected routes require Authorization: Bearer <token>.
+•  Global rate limit exists: 100 requests / 60s / IP (backend/src/routes/mod.rs, backend/src/middleware/rate_limiter.rs).
+•  Error shape is consistent:
+◦  { "error": "...", "status": <code> } (backend/src/errors/mod.rs).
+
+Available API surface:
+•  Auth:
+◦  POST /api/auth/register
+◦  POST /api/auth/login
+◦  GET /api/auth/me
+◦  GET /api/auth/health
+•  Users:
+◦  create/list/get/update/delete
+◦  change password
+◦  update role
+◦  activate/deactivate
+•  Products:
+◦  create/list/get/update/delete
+◦  stock patch
+◦  low-stock/expiring/expired alerts
+
+Important PRD vs backend mismatches to confirm:
+1. Role names: backend uses admin | manager | cashier (not staff).
+2. Registration rule: POST /api/auth/register only works for first user; afterward it returns forbidden.
+3. Product create/update request does not include images field currently (response has images).
+4. Product filters currently support category, search, low_stock, expiring_soon, expired, is_active — no explicit price range filter.
+5. No dedicated backend endpoints for:
+◦  dashboard summary metrics,
+◦  recent activity/transactions feed,
+◦  app preferences/theme.
+6. Settings page can partially map to existing routes (/api/auth/me, PUT /api/users/:id, PATCH /api/users/change-password) but not theme persistence server-side.
+
+Please confirm these before I start:
+1. Should I build frontend against current backend as-is and adapt UI labels/flows accordingly?
+2. Do you want backend changes first for missing pieces (dashboard/activity endpoints, product image input, price filters, staff role alias)?
+3. For Settings theme toggle, should it be frontend-only (localStorage) for now?
+4. Should I scaffold a fresh Vite React JS app inside frontend/ (currently almost empty) and then implement module-by-module exactly as you requested?
